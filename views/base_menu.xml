@@ -1,0 +1,22 @@
+<odoo>
+    <!-- Root Menu for Real Estate -->
+    <menuitem
+        id="real_estate_root_menu"
+        name="Real Estate"
+        web_icon="app_one,static/description/icon.png"
+    />
+
+    <!-- Submenu for Properties -->
+    <menuitem
+        id="properties_menu"
+        name="Properties"
+        parent="real_estate_root_menu"
+    />
+    <!-- Submenu for owners -->
+    <menuitem
+        id="configration_menu"
+        name="configration"
+        parent="real_estate_root_menu"
+    />
+
+</odoo>

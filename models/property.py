@@ -38,6 +38,7 @@ class PROPERTY(models.Model):
         ('draft', 'Draft'),
         ('pending', 'Pending'),
         ('sold_out', 'Sold_out'),
+        ('closed', 'Closed'),
     ], default='draft')
 
     @api.constrains('bedrooms')
@@ -55,6 +56,10 @@ class PROPERTY(models.Model):
     def action_sold_out(self):
         for rec in self:
             rec.state ='sold_out'
+
+    def action_closed(self):
+        for rec in self:
+            rec.state = 'closed'
 
     @api.depends('expected_price', 'selling_price')
     def _compute_diff(self):

@@ -4,16 +4,18 @@
         <field name="name">property tree</field>
         <field name="model">property</field>
         <field name="arch" type="xml">
-            <tree multi_edit="1" create="1" edit="1" delete="1" class="header_custom">
+            <tree multi_edit="1" create="1" edit="1" delete="1" class="header_custom" decoration-danger="(is_late)">
                 <field name="name"/>
+                <field name="is_late" invisible="1"/>
                 <field name="description" optional="6"/>
                 <field name="postcode"/>
                 <field name="owner_id"/>
-                <field name="owner_phone_number"/>
-                <field name="owner_address"/>
-                <field name="tags_id"/>
+                <field name="owner_phone_number" optional="8"/>
+                <field name="owner_address" optional="7"/>
+                <field name="tags_id"  optional="5"/>
                 <field name="state"/>
-                <field name="date_availability" optional="5"/>
+                <field name="date_availability"/>
+                <field name="expected_date"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="diff"/>
@@ -24,7 +26,7 @@
                 <field name="garden" optional="2"/>
                 <field name="garden_area" optional="3"/>
                 <field name="garden_orientation" optional="4"/>
-                <field name="active"/>
+                <field name="active" optional="9"/>
             </tree>
         </field>
     </record>
@@ -52,6 +54,8 @@
                         <group string="general info">
                             <field name="postcode"/>
                             <field name="date_availability" required="1"/>
+                            <field name="expected_date"/>
+                            <field name="is_late"  invisible="1"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                             <field name="diff"/>
@@ -150,8 +154,16 @@
         </field>
     </record>
 
-
-
+    <record id="check_expected_date_cron" model="ir.cron">
+        <field name="name">Property: check expected date</field>
+        <field name="model_id" ref="model_property"/>
+        <field name="state">code</field>
+        <field name="code">model.check_expected_date()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="active">True</field>
+    </record>
 
     <!-- Menu Item for Property Action -->
     <menuitem

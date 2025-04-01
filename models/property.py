@@ -13,6 +13,8 @@ class PROPERTY(models.Model):
     description = fields.Text()
     postcode = fields.Char(required=True)
     date_availability = fields.Date(tracking=1)
+    expected_date = fields.Date(tracking=1)
+    is_late = fields.Boolean()
     expected_price = fields.Float(digits=(0, 2), tracking=1)
     selling_price = fields.Float(digits=(0, 2), tracking=1)
     diff = fields.Float(compute='_compute_diff', store=1)
@@ -56,10 +58,21 @@ class PROPERTY(models.Model):
     def action_sold_out(self):
         for rec in self:
             rec.state ='sold_out'
-
     def action_closed(self):
         for rec in self:
             rec.state = 'closed'
+
+    @api.model
+    def check_expected_date(self):
+        print(self)
+        property_ids = self.search([])
+        print(property_ids)
+        for rec in property_ids:
+            print(rec)
+            if rec.expected_date and rec.expected_date < fields.date.today():
+                rec.is_late = True
+
+
 
     @api.depends('expected_price', 'selling_price')
     def _compute_diff(self):

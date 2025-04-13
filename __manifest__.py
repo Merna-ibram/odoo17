@@ -15,6 +15,7 @@
         'views/res_partner_view.xml',
         'views/building_view.xml',
         'views/todo_task_view.xml',
+        'reports/property_report.xml'
     ],
 
 

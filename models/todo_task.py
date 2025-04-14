@@ -3,6 +3,7 @@ from odoo import models, fields
 class ToDoList(models.Model):
     _name = 'todo.list'
     _description = "To-Do List Information"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     task_name = fields.Char(required=True)
     assign_to = fields.Many2one('res.users')
@@ -14,12 +15,16 @@ class ToDoList(models.Model):
         ('completed', 'Completed'),
     ], default='new')
 
-    def action_do(self):
-        self.state = 'new'
+    def action_new(self):
+        for rec in self:
+            rec.state = 'new'
 
-    def action_doing(self):
-        self.state = 'in progress'
+    def action_in_progress(self):
+        for rec in self:
+            rec.state = 'in progress'
 
-    def action_done(self):
-        self.state = 'completed'
+    def action_completed(self):
+        for rec in self:
+            rec.state = 'completed'
+
 

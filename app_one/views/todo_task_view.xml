@@ -1,0 +1,74 @@
+<odoo>
+    <record id="todo_list_view_tree" model="ir.ui.view">
+        <field name="name">todo.list.tree</field>
+        <field name="model">todo.list</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="task_name"/>
+                <field name="assign_to"/>
+                <field name="due_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="todo_list_view_form" model="ir.ui.view">
+        <field name="name">todo.list.form</field>
+        <field name="model">todo.list</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_new" type="object" class="oe_highlight" string="New"
+                            conditional_visibility="state != 'new'"/>
+                    <button name="action_in_progress" type="object" class="btn-secondary" string="In Progress"
+                            conditional_visibility="state != 'in progress'"/>
+                    <button name="action_completed" type="object" class="btn-success" string="Completed"
+                            conditional_visibility="state != 'completed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,in progress,completed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="task_name"/>
+                        <field name="assign_to"/>
+                        <field name="due_date"/>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="todo_list_view_search" model="ir.ui.view">
+        <field name="name">todo.list.search</field>
+        <field name="model">todo.list</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="task_name"/>
+                <field name="assign_to"/>
+
+                <filter string="New" name="state_new" domain="[('state', '=', 'new')]"/>
+                <filter string="In Progress" name="state_progress" domain="[('state', '=', 'in progress')]"/>
+                <filter string="Completed" name="state_completed" domain="[('state', '=', 'completed')]"/>
+
+                <filter name="group_state" string="status" context="{'group_by' : 'state'}"/>
+                <filter name="group_date" string="date" context="{'group_by' : 'due_date'}"/>
+                <filter name="group_assign_to" string="assign_to" context="{'group_by' : 'assign_to'}"/>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="todo_list_action" model="ir.actions.act_window">
+        <field name="name">To-Do List</field>
+        <field name="res_model">todo.list</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_todo_list_main" name="All Tasks" action="todo_list_action"/>
+</odoo>

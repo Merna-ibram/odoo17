@@ -1,0 +1,14 @@
+<odoo>
+
+    <menuitem
+        id="todo_root_menu"
+        name="TO DO"
+    />
+
+    <menuitem
+        id="todo_menu"
+        name="TO DO"
+        parent="todo_root_menu"
+    />
+
+</odoo>

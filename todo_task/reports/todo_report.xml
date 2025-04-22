@@ -24,8 +24,8 @@
                         <thead>
                             <tr>
                                 <th>Description</th>
-                                <th>Time</th>
-                                <th>Date</th>
+                                <th>Time Spent (hrs)</th>
+<!--                                <th>Date</th>-->
                             </tr>
                         </thead>
                         <tbody>
@@ -34,7 +34,7 @@
                                      <tr>
                                          <td><t t-esc="line.description"/></td>
                                          <td><t t-esc="line.time_spent"/></td>
-                                         <td><t t-esc="line.due_date"/></td>
+<!--                                         <td><t t-esc="line.due_date"/></td>-->
                                      </tr>
 <!--                                     <tr>-->
 <!--                                         <td><t t-esc="line.check_total_time"/></td>-->

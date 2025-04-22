@@ -1,0 +1,60 @@
+<odoo>
+    <record id="todo_report" model="ir.actions.report">
+        <field name="name">todo_report</field>
+        <field name="model">todo.list</field>
+        <field name="report_type">qweb-html</field>
+        <field name="binding_model_id" ref="model_todo_list"/>
+        <field name="binding_type">report</field>
+        <field name="report_name">todo_task.report_task_template</field>
+    </record>
+
+    <template id="report_task_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="page">
+                    <h2 style="text-align: center;">Task Report</h2>
+                    <p><strong>Task Name:</strong> <t t-esc="doc.name"/></p>
+                    <p><strong>Assigned To:</strong> <t t-esc="doc.assign_to.name"/></p>
+                    <p><strong>Due Date:</strong> <t t-esc="doc.due_date"/></p>
+                    <p><strong>Estimated Time:</strong> <t t-esc="doc.estimated_time "/></p>
+                    <p><strong>Status:</strong> <t t-esc="doc.state"/></p>
+
+                    <h4>Timesheet Lines</h4>
+                    <table style="width: 100%; border-collapse: collapse;" border="1">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Time</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <table style="width: 100%; border-collapse: collapse;" border="1">
+                                 <t t-foreach="doc.task_line_ids" t-as="line">
+                                     <tr>
+                                         <td><t t-esc="line.description"/></td>
+                                         <td><t t-esc="line.time_spent"/></td>
+                                         <td><t t-esc="line.due_date"/></td>
+                                     </tr>
+<!--                                     <tr>-->
+<!--                                         <td><t t-esc="line.check_total_time"/></td>-->
+<!--                                     </tr>-->
+                                 </t>
+                            </table>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <report
+        id="action_task_report"
+        string="Task Report"
+        model="todo.list"
+        report_type="qweb-pdf"
+        name="todo.report_task_template"
+        file="todo.report_task_template"
+        print_report_name="'Task - %s' % (object.name)"
+    />
+</odoo>

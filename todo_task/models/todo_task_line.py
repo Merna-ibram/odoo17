@@ -8,4 +8,3 @@ class ToDoListLine(models.Model):
     task_id = fields.Many2one('todo.list', string="Task")
     description = fields.Text()
     time_spent = fields.Float(string="Time Spent (hrs)")
-

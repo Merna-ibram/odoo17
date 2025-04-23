@@ -1,13 +1,12 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
-from odoo.tools.populate import compute
-
 
 class PROPERTY(models.Model):
     _name = 'property'
     _description = "Property Information"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
+    ref= fields.Char(default='new', readonly=1)
     name =  fields.Char(required=True, size=15)
     active = fields.Boolean(default=1)
     description = fields.Text()
@@ -63,6 +62,15 @@ class PROPERTY(models.Model):
             rec.state = 'closed'
 
     @api.model
+    def create(self, vals):
+        print("generated ref:", vals['ref'])
+        res = super(PROPERTY, self).create(vals)
+        if res.ref =='new':
+            res.ref = self.env['ir.sequence'].next_by_code('property_seq')
+        return res
+
+
+    @api.model
     def check_expected_date(self):
         print(self)
         property_ids = self.search([])
@@ -91,11 +99,11 @@ class PROPERTY(models.Model):
         ('unique_name','unique("name")','this name is exist ! please try anther one')
     ]
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        res = super(PROPERTY, self).create(vals_list)
-        print("inside create method")
-        return res
+    # @api.model_create_multi
+    # def create(self, vals_list):
+    #     res = super(PROPERTY, self).create(vals_list)
+    #     print("inside create method")
+    #     return res
 
     @api.model
     def _search(self, domain, offset=0, limit=None, order=None, access_rights_uid=None):
@@ -112,6 +120,23 @@ class PROPERTY(models.Model):
         res = super(PROPERTY, self).unlink()
         print("inside deleted method")
         return res
+
+    def action(self):
+        print(self.env.user.name)
+        print(self.env.user.login)
+        print(self.env.user.id)
+        print(self.env.company.name)
+        print(self.env.company.id)
+        print(self.env.company.street)
+        print(self.env.context)
+        print(self.env.cr)
+        # print(self.env['owner'].create({
+        #     'name': '5458',
+        #     'address': 'maghagha',
+        #     'e_mail': 'sfdsfvds',
+        #     'phone_number': '0236564415631'
+        # }))
+        print(self.env['owner'].search([]))
 
 class PROPERTYLine(models.Model):
     _name = 'property_line'

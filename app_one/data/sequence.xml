@@ -1,7 +1,7 @@
 <odoo>
     <data>
         <record id="property_sequence" model="ir.sequence">
-            <field name="name">property sequence</field>
+            <field name="name">Property Sequence</field>
             <field name="code">property_seq</field>
             <field name="prefix">PRT</field>
             <field name="padding">5</field>

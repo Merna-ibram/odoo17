@@ -1,13 +1,14 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
+
 class PROPERTY(models.Model):
     _name = 'property'
     _description = "Property Information"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    ref= fields.Char(default='new', readonly=1)
-    name =  fields.Char(required=True, size=15)
+    ref = fields.Char(default='new', readonly=1)
+    name = fields.Char(required=True, size=15)
     active = fields.Boolean(default=1)
     description = fields.Text()
     postcode = fields.Char(required=True)
@@ -24,15 +25,15 @@ class PROPERTY(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection([
-        ('north' ,'NORTH'),
-        ('south','SOUTH'),
-        ('east','EAST'),
-        ('west','WEST'),
+        ('north', 'NORTH'),
+        ('south', 'SOUTH'),
+        ('east', 'EAST'),
+        ('west', 'WEST'),
     ], default='north')
     owner_id = fields.Many2one('owner')
     tags_id = fields.Many2many('tags')
-    line_ids = fields.One2many('property_line','property_id')
-    living_area_ids = fields.One2many('property_line2','living_area_id')
+    line_ids = fields.One2many('property_line', 'property_id')
+    living_area_ids = fields.One2many('property_line2', 'living_area_id')
     owner_address = fields.Char(related='owner_id.address', readonly=0, store=1)
     owner_phone_number = fields.Char(related='owner_id.address')
     state = fields.Selection([
@@ -45,30 +46,41 @@ class PROPERTY(models.Model):
     @api.constrains('bedrooms')
     def _check_bedrooms_greater_zero(self):
         for rec in self:
-            if rec.bedrooms ==0:
+            if rec.bedrooms == 0:
                 raise ValidationError('please add valid number of bedrooms')
 
     def action_draft(self):
         for rec in self:
-            rec.state ='draft'
+            rec.state = 'draft'
+
     def action_pending(self):
         for rec in self:
-            rec.state ='pending'
+            rec.state = 'pending'
+
     def action_sold_out(self):
         for rec in self:
-            rec.state ='sold_out'
+            rec.state = 'sold_out'
+
     def action_closed(self):
         for rec in self:
             rec.state = 'closed'
 
     @api.model
     def create(self, vals):
-        print("generated ref:", vals['ref'])
+        # No need to check for 'ref' key - the default value will be applied by ORM
+        # when the field is not provided in vals
         res = super(PROPERTY, self).create(vals)
-        if res.ref =='new':
-            res.ref = self.env['ir.sequence'].next_by_code('property_seq')
-        return res
 
+        # After creation, if the reference is still the default 'new',
+        # generate the next sequence number
+        if res.ref == 'new':
+            # Get next sequence number
+            sequence = self.env['ir.sequence'].next_by_code('property_seq')
+            if sequence:
+                # Update the record with the generated sequence
+                res.ref = sequence
+
+        return res
 
     @api.model
     def check_expected_date(self):
@@ -80,8 +92,6 @@ class PROPERTY(models.Model):
             if rec.expected_date and rec.expected_date < fields.date.today():
                 rec.is_late = True
 
-
-
     @api.depends('expected_price', 'selling_price')
     def _compute_diff(self):
         for rec in self:
@@ -91,12 +101,11 @@ class PROPERTY(models.Model):
     def _onchange_expected_price(self):
         for rec in self:
             return {
-                'warning':{'title': 'warning', 'message' : 'negative value' , 'type' : 'notification'}
+                'warning': {'title': 'warning', 'message': 'negative value', 'type': 'notification'}
             }
 
-
     _sql_constraints = [
-        ('unique_name','unique("name")','this name is exist ! please try anther one')
+        ('unique_name', 'unique("name")', 'this name is exist ! please try anther one')
     ]
 
     # @api.model_create_multi
@@ -138,6 +147,7 @@ class PROPERTY(models.Model):
         # }))
         print(self.env['owner'].search([]))
 
+
 class PROPERTYLine(models.Model):
     _name = 'property_line'
     _description = "Property Line"
@@ -145,6 +155,7 @@ class PROPERTYLine(models.Model):
     property_id = fields.Many2one('property')
     area = fields.Float()
     description = fields.Char()
+
 
 class PROPERTYLine2(models.Model):
     _name = 'property_line2'

@@ -25,24 +25,34 @@
                             <tr>
                                 <th>Description</th>
                                 <th>Time Spent (hrs)</th>
-<!--                                <th>Date</th>-->
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <table style="width: 100%; border-collapse: collapse;" border="1">
-                                 <t t-foreach="doc.task_line_ids" t-as="line">
-                                     <tr>
-                                         <td><t t-esc="line.description"/></td>
-                                         <td><t t-esc="line.time_spent"/></td>
-<!--                                         <td><t t-esc="line.due_date"/></td>-->
-                                     </tr>
-<!--                                     <tr>-->
-<!--                                         <td><t t-esc="line.check_total_time"/></td>-->
-<!--                                     </tr>-->
-                                 </t>
-                            </table>
+                            <t t-foreach="doc.task_line_ids" t-as="line">
+                                <tr>
+                                    <td><t t-esc="line.description"/></td>
+                                    <td><t t-esc="line.time_spent"/></td>
+                                    <td><t t-esc="line.check_total_time()"/></td>
+                                </tr>
+                            </t>
                         </tbody>
                     </table>
+
+                    <!-- Add a better way to show time budget status -->
+                    <t t-set="total_time" t-value="sum(doc.task_line_ids.mapped('time_spent'))"/>
+                    <p>
+                        <strong>Total Time Spent:</strong> <t t-esc="total_time"/> hrs
+                    </p>
+                    <p t-if="doc.estimated_time">
+                        <strong>Time Budget Status:</strong>
+                        <span t-if="total_time &lt;= doc.estimated_time" style="color: green;">
+                            Within Estimate
+                        </span>
+                        <span t-else="" style="color: red;">
+                            Exceeds Estimate by <t t-esc="total_time - doc.estimated_time"/> hrs
+                        </span>
+                    </p>
                 </div>
             </t>
         </t>

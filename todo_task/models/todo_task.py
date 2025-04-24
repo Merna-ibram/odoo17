@@ -67,9 +67,9 @@ class ToDoList(models.Model):
         }))
         print(self.env['todo.list.line'].search([]))
 
-@api.constrains('task_line_ids', 'estimated_time')
-def _check_total_time(self):
-    for rec in self:
-        total_time = sum(rec.task_line_ids.mapped('time_spent'))
-        if rec.estimated_time and total_time > rec.estimated_time:
-            raise ValidationError("Total time spent exceeds estimated time!")
+    @api.constrains('task_line_ids', 'estimated_time')
+    def _check_total_time(self):
+        for rec in self:
+            total_time = sum(rec.task_line_ids.mapped('time_spent'))
+            if rec.estimated_time and total_time > rec.estimated_time:
+                raise ValidationError("Total time spent exceeds estimated time!")

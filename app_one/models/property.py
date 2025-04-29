@@ -10,6 +10,7 @@ class PROPERTY(models.Model):
     ref = fields.Char(default='new', readonly=1)
     name = fields.Char(required=True, size=15)
     active = fields.Boolean(default=1)
+    property_image = fields.Image()
     description = fields.Text()
     postcode = fields.Char(required=True)
     date_availability = fields.Date(tracking=1)
@@ -35,7 +36,7 @@ class PROPERTY(models.Model):
     line_ids = fields.One2many('property_line', 'property_id')
     living_area_ids = fields.One2many('property_line2', 'living_area_id')
     owner_address = fields.Char(related='owner_id.address', readonly=0, store=1)
-    owner_phone_number = fields.Char(related='owner_id.address')
+    owner_phone_number = fields.Char(related='owner_id.phone_number')
     state = fields.Selection([
         ('draft', 'Draft'),
         ('pending', 'Pending'),
@@ -51,19 +52,32 @@ class PROPERTY(models.Model):
 
     def action_draft(self):
         for rec in self:
+            rec.create_history_record(rec.state, 'draft')
             rec.state = 'draft'
+
 
     def action_pending(self):
         for rec in self:
+            rec.create_history_record(rec.state, 'pending')
             rec.state = 'pending'
 
     def action_sold_out(self):
         for rec in self:
+            rec.create_history_record(rec.state, 'sold_out')
             rec.state = 'sold_out'
 
     def action_closed(self):
         for rec in self:
+            rec.create_history_record(rec.state, 'closed')
             rec.state = 'closed'
+
+
+    def action_open_state(self):
+        action = self.env['ir.actions.actions']._for_xml_id('app_one.property_change_state_action')
+        action['context'] = {'default_property_id': self.id}
+        return action
+
+
 
     @api.model
     def create(self, vals):
@@ -131,21 +145,32 @@ class PROPERTY(models.Model):
         return res
 
     def action(self):
-        print(self.env.user.name)
-        print(self.env.user.login)
-        print(self.env.user.id)
-        print(self.env.company.name)
-        print(self.env.company.id)
-        print(self.env.company.street)
-        print(self.env.context)
-        print(self.env.cr)
+        # print(self.env.user.name)
+        # print(self.env.user.login)
+        # print(self.env.user.id)
+        # print(self.env.company.name)
+        # print(self.env.company.id)
+        # print(self.env.company.street)
+        # print(self.env.context)
+        # print(self.env.cr)
         # print(self.env['owner'].create({
         #     'name': '5458',
         #     'address': 'maghagha',
         #     'e_mail': 'sfdsfvds',
         #     'phone_number': '0236564415631'
         # }))
-        print(self.env['owner'].search([]))
+        print(self.env['property'].search([('name','!=','property')]))
+
+    def create_history_record(self, old_state, new_state, reason=""):
+        for rec in self:
+            rec.env['property.history'].create({
+                'user_id': rec.env.uid,
+                'property_id': rec.id,
+                'old_state': old_state,
+                'new_state': new_state,
+                'reason': reason or "",
+                'line_ids': [(0, 0, {'description' : line.description, 'area' : line.area})for line in rec.line_ids],
+            })
 
 
 class PROPERTYLine(models.Model):
@@ -155,6 +180,7 @@ class PROPERTYLine(models.Model):
     property_id = fields.Many2one('property')
     area = fields.Float()
     description = fields.Char()
+    room_image = fields.Image()
 
 
 class PROPERTYLine2(models.Model):
@@ -164,3 +190,5 @@ class PROPERTYLine2(models.Model):
     living_area_id = fields.Many2one('property')
     area = fields.Float()
     description = fields.Char()
+    room_image = fields.Image()
+

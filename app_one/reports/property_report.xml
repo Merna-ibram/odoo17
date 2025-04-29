@@ -2,7 +2,7 @@
     <record id="property_report" model="ir.actions.report">
         <field name="name">property_report</field>
         <field name="model">property</field>
-<!--        <field name="report_type">qweb-pdf</field>-->
+        <!-- <field name="report_type">qweb-pdf</field> -->
         <field name="report_type">qweb-html</field>
         <field name="binding_model_id" ref="model_property"/>
         <field name="binding_type">report</field>
@@ -14,38 +14,50 @@
             <t t-call="web.external_layout">
                 <t t-foreach="docs" t-as="o">
                     <h1 style="text-align:center; font-size: 24px; font-weight: bold; margin-bottom: 30px; color: #2E86C1;">Property Report</h1>
+
                     <style>
                         table {
                             width: 100%;
                             border-collapse: collapse;
-                            margin-top: 20px;
-                            margin-bottom: 20px;
+                            margin: 25px 0;
+                            font-family: Arial, sans-serif;
                         }
                         thead th {
-                            background-color: #D6EAF8;
-                            border: 1px solid #bbb;
+                            background-color: #AED6F1;
+                            color: #154360;
                             padding: 10px;
-                            text-align: left;
                             font-size: 15px;
-                            color: #1B4F72;
+                            border: 1px solid #bbb;
+                            text-align: center;
                         }
                         tbody td {
-                            border: 1px solid #ddd;
+                            border: 1px solid #ccc;
                             padding: 8px;
                             font-size: 13px;
                             color: #2C3E50;
+                            text-align: center;
+                        }
+                        tr:nth-child(even) td {
+                            background-color: #F8F9F9;
+                        }
+                        tfoot td {
+                            background-color: #D6EAF8;
+                            font-weight: bold;
+                            text-align: center;
                         }
                         td {
                             text-transform: capitalize;
                         }
-                        tr:nth-child(even) td {
-                            background-color: #f9f9f9;
+                        img {
+                            max-height: 60px;
+                            max-width: 60px;
                         }
                     </style>
 
+                    <!-- General and Owner Info -->
                     <table>
                         <thead>
-                            <th colspan="4">General Info</th>
+                            <tr><th colspan="4">General Info</th></tr>
                         </thead>
                         <tbody>
                             <tr>
@@ -56,12 +68,11 @@
                             </tr>
                         </tbody>
                         <thead>
-                            <th colspan="4">Owner Info</th>
+                            <tr><th colspan="4">Owner Info</th></tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>Owner</td>
-<!--                                <td><t t-esc="o.owner_id.name"/></td>-->
                                 <td><span t-field="o.owner_id"/></td>
                                 <td>Phone</td>
                                 <td><t t-esc="o.owner_phone_number"/></td>
@@ -69,19 +80,70 @@
                         </tbody>
                     </table>
 
+                    <!-- Bedrooms -->
+                    <t t-set="bedroom_total" t-value="0"/>
                     <table>
                         <thead>
-                            <th>Description</th>
-                            <th>Area (m²)</th>
+                            <tr><th colspan="6">Bedrooms</th></tr>
+                            <tr>
+                                <th>Description</th>
+                                <th>Area (m²)</th>
+                                <th>Image</th>
+                                <th colspan="3"></th>
+                            </tr>
                         </thead>
                         <tbody>
                             <t t-foreach="o.line_ids" t-as="line">
+                                <t t-set="bedroom_total" t-value="bedroom_total + (line.area or 0)"/>
                                 <tr>
-                                    <td><span t-field="line.description"/></td>
+                                    <td><t t-esc="line.description"/></td>
                                     <td><t t-esc="line.area"/></td>
+                                    <td>
+                                        <img t-if="line.room_image" t-att-src="'data:image/png;base64,%s' % line.room_image.decode('utf-8')"/>
+                                    </td>
+                                    <td colspan="3"></td>
                                 </tr>
                             </t>
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="1">Total Area</td>
+                                <td colspan="5"><t t-esc="bedroom_total"/> m²</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                    <!-- Living Area -->
+                    <t t-set="living_total" t-value="0"/>
+                    <table>
+                        <thead>
+                            <tr><th colspan="6">Living Area</th></tr>
+                            <tr>
+                                <th>Description</th>
+                                <th>Area (m²)</th>
+                                <th>Image</th>
+                                <th colspan="3"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.living_area_ids" t-as="line2">
+                                <t t-set="living_total" t-value="living_total + (line2.area or 0)"/>
+                                <tr>
+                                    <td><t t-esc="line2.description"/></td>
+                                    <td><t t-esc="line2.area"/></td>
+                                    <td>
+                                        <img t-if="line2.room_image" t-att-src="'data:image/png;base64,%s' % line2.room_image.decode('utf-8')"/>
+                                    </td>
+                                    <td colspan="3"></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="1">Total Area</td>
+                                <td colspan="5"><t t-esc="living_total"/> m²</td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </t>
             </t>

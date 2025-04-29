@@ -6,9 +6,10 @@
         <field name="arch" type="xml">
             <tree multi_edit="1" create="1" edit="1" delete="1" class="header_custom" decoration-danger="(is_late)">
                 <field name="name"/>
-                <field name="is_late" invisible="1"/>
+                <field name="is_late" invisible="1" optional="10"/>
                 <field name="description" optional="6"/>
                 <field name="postcode"/>
+<!--                <field name="property_image" widget="image" class="oe_avatar" options="{'preview_image': 'property_image'}"/>-->
                 <field name="owner_id"/>
                 <field name="owner_phone_number" optional="8"/>
                 <field name="owner_address" optional="7"/>
@@ -39,9 +40,12 @@
             <form create="1" edit="1" delete="1">
                 <sheet>
                     <header>
-                        <button name="action" type="object" class="btn-primary" string="action"/>
-                        <button name="action_draft" type="object" class="btn-primary" string="draft" invisible="state == 'draft'"/>
-                        <button name="action_pending" type="object" class="btn-secondary" string="pending" invisible="state != 'draft'"/>
+                        <button name="action" type="object" class="btn-primary"
+                                string="action"/>
+                        <button name="action_draft" type="object" class="btn-primary"
+                                string="draft" invisible="state in ('draft','closed')"/>
+                        <button name="action_pending" type="object" class="btn-secondary"
+                                string="pending" invisible="state != 'draft'"/>
                         <button name="action_sold_out" type="object" class="btn-third" string="sold_out" invisible="state != 'pending'"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft, pending, sold_out, closed"/>
                     </header>
@@ -52,35 +56,36 @@
                         </h1>
                         <label for="name"/>
                         <h3>
-                            <field name="name"/>
+                            <field name="name" readonly="state == 'closed'"/>
                         </h3>
                     </div>
                     <group>
                         <group string="general info">
-                            <field name="postcode"/>
-                            <field name="date_availability" required="1"/>
-                            <field name="expected_date"/>
-                            <field name="is_late"  invisible="1"/>
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
-                            <field name="diff"/>
-                            <field name="bedrooms"/>
-                            <field name="active"/>
+                            <field name="property_image" widget="image" class="oe_avatar" options="{'preview_image': 'property_image'}"/>
+                            <field name="postcode" readonly="state == 'closed'"/>
+                            <field name="date_availability" required="1" readonly="state == 'closed'"/>
+                            <field name="expected_date" readonly="state == 'closed'"/>
+                            <field name="is_late"  invisible="1" readonly="state == 'closed'"/>
+                            <field name="expected_price" readonly="state == 'closed'"/>
+                            <field name="selling_price" readonly="state == 'closed'"/>
+                            <field name="diff" readonly="state == 'closed'"/>
+                            <field name="bedrooms" readonly="state == 'closed'"/>
+                            <field name="active"  readonly="state == 'closed'"/>
 
                         </group>
                         <group string="additional info">
-                             <field name="living_area"/>
-                             <field name="facades"/>
-                             <field name="garage"/>
-                             <field name="garden"/>
-                             <field name="garden_area"/>
-                             <field name="garden_orientation"/>
+                             <field name="living_area" readonly="state == 'closed'"/>
+                             <field name="facades" readonly="state == 'closed'"/>
+                             <field name="garage" readonly="state == 'closed'"/>
+                             <field name="garden" readonly="state == 'closed'"/>
+                             <field name="garden_area" readonly="state == 'closed'"/>
+                             <field name="garden_orientation" readonly="state == 'closed'"/>
                         </group>
                         <group string="owner info">
-                            <field name="owner_id" required="1"/>
-                            <field name="tags_id" widget="many2many_tags"/>
-                            <field name="owner_phone_number"/>
-                            <field name="owner_address"/>
+                            <field name="owner_id" required="1" readonly="state == 'closed'"/>
+                            <field name="tags_id" widget="many2many_tags" readonly="state == 'closed'"/>
+                            <field name="owner_phone_number" readonly="state == 'closed'"/>
+                            <field name="owner_address" readonly="state == 'closed'"/>
                         </group>
                         <group>
                             <field name="description"/>
@@ -88,18 +93,20 @@
                     </group>
                     <notebook>
                         <page string="Bedrooms">
-                            <field name="line_ids">
+                            <field name="line_ids" readonly="state == 'closed'">
                                 <tree editable="bottom">
                                     <field name="description"/>
                                     <field name="area"/>
+                                    <field name="room_image" widget="image"/>
                                 </tree>
                             </field>
                         </page>
                         <page string="living area">
-                            <field name="living_area_ids">
+                            <field name="living_area_ids" readonly="state == 'closed'">
                                 <tree editable="bottom">
                                     <field name="description"/>
                                     <field name="area"/>
+                                    <field name="room_image" widget="image"/>
                                 </tree>
                             </field>
                         </page>
@@ -132,6 +139,7 @@
                 <filter name="is_state" string="draft" domain="[('state', '=', 'draft')]"/>
                 <filter name="is_state" string="pending" domain="[('state', '=', 'pending')]"/>
                 <filter name="is_state" string="sold_out" domain="[('state', '=', 'sold_out')]"/>
+                <filter name="is_state" string="closed" domain="[('state', '=', 'closed')]"/>
 
 
 
@@ -156,6 +164,16 @@
         <field name="state">code</field>
         <field name="code">
             action = records.action_closed()
+        </field>
+    </record>
+
+        <record id="property_change_state_server_action" model="ir.actions.server">
+        <field name="name">property_change_state</field>
+        <field name="model_id" ref="model_property"/>
+        <field name="binding_model_id" ref="model_property"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = records.action_open_state()
         </field>
     </record>
 

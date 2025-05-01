@@ -17,6 +17,7 @@
         'views/sale_order_view.xml',
         'views/res_partner_view.xml',
         'views/building_view.xml',
+        'views/account_move_view.xml',
         'wizard/property_change_state_view.xml',
         'reports/property_report.xml',
 

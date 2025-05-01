@@ -39,6 +39,14 @@
         <field name="arch" type="xml">
             <form create="1" edit="1" delete="1">
                 <sheet>
+                    <div name="button_box" class="oe_button_box">
+                        <button name="related_owner" type="object" string="Owner" invisible="not owner_id" icon="fa-user"/>
+                    </div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-warning " invisible="active"/>
+                    <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold_out'"/>
+                    <widget name="web_ribbon" title="New" bg_color="text-bg-primary" invisible="state != 'draft'"/>
+                    <widget name="web_ribbon" title="Pending" bg_color="text-bg-secondary" invisible="state != 'pending'"/>
+                    <widget name="web_ribbon" title="Closed" bg_color="text-bg-danger" invisible="state != 'closed'"/>
                     <header>
                         <button name="action" type="object" class="btn-primary"
                                 string="action"/>
@@ -71,7 +79,6 @@
                             <field name="diff" readonly="state == 'closed'"/>
                             <field name="bedrooms" readonly="state == 'closed'"/>
                             <field name="active"  readonly="state == 'closed'"/>
-
                         </group>
                         <group string="additional info">
                              <field name="living_area" readonly="state == 'closed'"/>
@@ -122,7 +129,7 @@
         </field>
     </record>
 
-        <!-- Search View for Property Model -->
+    <!-- Search View for Property Model -->
     <record id="property_view_search" model="ir.ui.view">
         <field name="name">property search</field>
         <field name="model">property</field>

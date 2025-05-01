@@ -45,7 +45,7 @@
         </field>
     </record>
 
-        <!-- Search View for owner Model -->
+    <!-- Search View for owner Model -->
     <record id="owner_view_search" model="ir.ui.view">
         <field name="name">owner search</field>
         <field name="model">owner</field>

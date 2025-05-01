@@ -1,7 +1,8 @@
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from odoo.tools.populate import compute
-
+from datetime import  timedelta
 
 class ToDoList(models.Model):
     _name = 'todo.list'
@@ -21,6 +22,8 @@ class ToDoList(models.Model):
         ('closed', 'Closed'),
     ], default='new')
     active = fields.Boolean(default=True)
+    create_time = fields.Datetime(default=fields.Datetime.now())
+    next_time = fields.Datetime(compute='compute_next_time')
     estimated_time = fields.Float(string="Estimated Time (hrs)")
     task_line_ids = fields.One2many("todo.list.line", "task_id", string="Timesheet Lines")
 
@@ -60,12 +63,16 @@ class ToDoList(models.Model):
         print(self.env.company.street)
         print(self.env.context)
         print(self.env.cr)
-        print(self.env['todo.list.line'].create({
-            'description': 'abanoub',
-            'time_spent': '3',
-            # 'task_id': rec.ids
-        }))
-        print(self.env['todo.list.line'].search([]))
+
+
+    def create_new_line(self, description,time_spent):
+          for rec in self:
+            rec.env['todo.list.line'].create({
+                'task_id': rec.id,
+                'description': description,
+                'time_spent': time_spent,
+            })
+          print(self.env['todo.list.line'].search([]))
 
     @api.constrains('task_line_ids', 'estimated_time')
     def _check_total_time(self):
@@ -73,3 +80,11 @@ class ToDoList(models.Model):
             total_time = sum(rec.task_line_ids.mapped('time_spent'))
             if rec.estimated_time and total_time > rec.estimated_time:
                 raise ValidationError("Total time spent exceeds estimated time!")
+
+    @api.depends('create_time')
+    def compute_next_time(self):
+        for rec in self:
+            if rec.create_time:
+                rec.next_time =  rec.create_time + timedelta(hours=6)
+            else:
+                rec.next_time = False

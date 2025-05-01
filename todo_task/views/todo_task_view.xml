@@ -4,7 +4,6 @@
         <field name="model">todo.list</field>
         <field name="arch" type="xml">
             <tree decoration-danger="(is_late)">
-<!--            <tree>-->
                 <field name="name"/>
                 <field name="assign_to"/>
                 <field name="due_date"/>
@@ -12,6 +11,8 @@
                 <field name="active"/>
                 <field name="is_late" invisible="1"/>
                 <field name="estimated_time"/>
+                <field name="create_time"/>
+                <field name="next_time"/>
             </tree>
         </field>
     </record>
@@ -25,7 +26,7 @@
                     <header>
                         <button name="action" type="object" class="btn-primary" string="Test Info"/>
                         <button name="action_new" type="object" class="oe_highlight" string="New"
-                                invisible="state == 'new'"/>
+                                invisible="state in ('new','closed')"/>
                         <button name="action_in_progress" type="object" class="btn-secondary" string="In Progress"
                                 invisible="state != 'new'"/>
                         <button name="action_completed" type="object" class="btn-success" string="Completed"
@@ -35,17 +36,20 @@
                         <field name="state" widget="statusbar" statusbar_visible="new, in progress, completed, closed"/>
                     </header>
                     <group>
-                        <field name="name"/>
-                        <field name="assign_to"/>
-                        <field name="due_date"/>
-                        <field name="description"/>
-                        <field name="active"/>
-                        <field name="expected_date"/>
-                        <field name="is_late" invisible="1"/>
+                        <field name="create_time" readonly="1"/>
+                        <field name="next_time" readonly="1"/>
+                        <field name="name" readonly="state == 'closed'"/>
+                        <field name="assign_to" readonly="state == 'closed'"/>
+                        <field name="due_date" readonly="state == 'closed'"/>
+                        <field name="description" readonly="state == 'closed'"/>
+                        <field name="active" readonly="state == 'closed'"/>
+                        <field name="expected_date" readonly="state == 'closed'"/>
+                        <field name="is_late" invisible="1" readonly="state == 'closed'"/>
+                        <field name="estimated_time" readonly="state == 'closed'"/>
                     </group>
                     <notebook>
                         <page string="Timesheet Lines">
-                            <field name="task_line_ids">
+                            <field name="task_line_ids" readonly="state == 'closed'">
                                 <tree editable="bottom">
                                     <field name="task_id"/>
                                     <field name="description"/>
@@ -75,6 +79,8 @@
                 <filter string="New" name="state_new" domain="[('state', '=', 'new')]"/>
                 <filter string="In Progress" name="state_progress" domain="[('state', '=', 'in progress')]"/>
                 <filter string="Completed" name="state_completed" domain="[('state', '=', 'completed')]"/>
+                <filter name="state_closed" string="Closed" domain="[('state', '=', 'closed')]"/>
+
 
                 <filter name="group_state" string="status" context="{'group_by' : 'state'}"/>
                 <filter name="group_date" string="date" context="{'group_by' : 'due_date'}"/>

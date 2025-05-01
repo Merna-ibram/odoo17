@@ -10,6 +10,7 @@ class ToDoListLine(models.Model):
     description = fields.Text()
     time_spent = fields.Float(string="Time Spent (hrs)")
 
+
     def check_total_time(self):
         """Check if this line's task has exceeded its estimated time.
 
@@ -18,7 +19,8 @@ class ToDoListLine(models.Model):
         """
         task = self.task_id
         if not task or not task.estimated_time:
-            return "No time estimate"
+            total_time = sum(task.task_line_ids.mapped('time_spent'))
+            return f"Time logged: {total_time:.2f} hrs (no estimate set)"
 
         total_time = sum(task.task_line_ids.mapped('time_spent'))
         if total_time > task.estimated_time:

@@ -1,0 +1,9 @@
+@font-face {
+font-family: "DancingScript";
+src: url(/app_one/static/src/fonts/DancingScript-Bold.ttf)
+}
+
+
+@font-face {
+font-family: "TitanOne";
+src: url(/app_one/static/src/fonts/TitanOne-Regular.ttf)

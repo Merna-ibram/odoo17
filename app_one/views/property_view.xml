@@ -89,7 +89,7 @@
                              <field name="garden_orientation" readonly="state == 'closed'"/>
                         </group>
                         <group string="owner info">
-                            <field name="owner_id" required="1" readonly="state == 'closed'"/>
+                            <field name="owner_id" required="0" readonly="state == 'closed'"/>
                             <field name="tags_id" widget="many2many_tags" readonly="state == 'closed'"/>
                             <field name="owner_phone_number" readonly="state == 'closed'"/>
                             <field name="owner_address" readonly="state == 'closed'"/>

@@ -7,4 +7,4 @@ from .import res_partner
 from .import building
 from .import property_history
 from .import account_move
-
+from .import sale_order_line

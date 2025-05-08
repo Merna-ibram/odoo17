@@ -86,14 +86,12 @@ class PROPERTY(models.Model):
 
     @api.model
     def create(self, vals):
-        # No need to check for 'ref' key - the default value will be applied by ORM
-        # when the field is not provided in vals
+
         res = super(PROPERTY, self).create(vals)
 
         # After creation, if the reference is still the default 'new',
         # generate the next sequence number
         if res.ref == 'new':
-            # Get next sequence number
             sequence = self.env['ir.sequence'].next_by_code('property_seq')
             if sequence:
                 # Update the record with the generated sequence
@@ -119,9 +117,14 @@ class PROPERTY(models.Model):
     @api.onchange('expected_price')
     def _onchange_expected_price(self):
         for rec in self:
-            return {
-                'warning': {'title': 'warning', 'message': 'negative value', 'type': 'notification'}
-            }
+            if rec.expected_price < 0:
+                return {
+                    'warning': {
+                        'title': 'Warning',
+                        'message': 'Expected price should not be negative.',
+                        'type': 'notification'
+                    }
+                }
 
     _sql_constraints = [
         ('unique_name', 'unique("name")', 'this name is exist ! please try anther one')

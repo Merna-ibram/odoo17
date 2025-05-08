@@ -1,33 +1,59 @@
+# -*- coding: utf-8 -*-
 {
     'name': "APP ONE",
     'author': "My Company",
     'website': "https://www.yourcompany.com",
-    'category': 'Uncategorized',
+    'category': 'Sales',
     'version': '0.1',
-    'depends': ['base', 'web', 'mail', 'sale_management', 'account_accountant', 'contacts'],
+    'license': 'LGPL-3',
+    'application': True,
+
+    'depends': [
+        'base',
+        'web',
+        'mail',
+        'sale',
+        'sale_management',
+        'account_accountant',
+        'contacts',
+    ],
+
     'data': [
+        # Security
         'security/security.xml',
         'security/ir.model.access.csv',
+
+        # Data
         'data/sequence.xml',
+
+        # Views
         'views/base_menu.xml',
         'views/property_view.xml',
         'views/property_history_view.xml',
         'views/owner_view.xml',
+        'views/building_view.xml',
         'views/tags_view.xml',
         'views/sale_order_view.xml',
+        'views/sale_order_line_view.xml',
         'views/res_partner_view.xml',
-        'views/building_view.xml',
         'views/account_move_view.xml',
-        'wizard/property_change_state_view.xml',
-        'reports/property_report.xml',
 
+        # Wizards
+        'wizard/property_change_state_view.xml',
+
+        # Reports
+        'reports/property_report.xml',
+        'reports/sale_order_report.xml',
     ],
 
-
-    'application': True,
-    'license': 'LGPL-3',
     'assets': {
-      'web.assets_backend':['app_one/static/src/css/property.css', 'app_one/static/src/css/owner.css'],
+        'web.report_assets_common': [
+            'app_one/static/src/css/property.css',
+            'app_one/static/src/css/font.css',
+        ],
+        'web.assets_backend': [
+            'app_one/static/src/css/property.css',
+            'app_one/static/src/css/owner.css',
+        ],
     },
-
 }

@@ -8,7 +8,7 @@ class PropertyChangeState(models.TransientModel):
         ('draft', 'Draft'),
         ('pending', 'Pending'),
     ], default='draft')
-    reason = fields.Char()
+    reason = fields.Char()   
 
     def action_confirm(self):
         if self.property_id.state == "closed":

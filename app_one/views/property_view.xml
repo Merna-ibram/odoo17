@@ -71,7 +71,7 @@
                         <group string="general info">
                             <field name="property_image" widget="image" class="oe_avatar" options="{'preview_image': 'property_image'}"/>
                             <field name="postcode" readonly="state == 'closed'"/>
-                            <field name="date_availability" required="1" readonly="state == 'closed'"/>
+                            <field name="date_availability" readonly="state == 'closed'"/>
                             <field name="expected_date" readonly="state == 'closed'"/>
                             <field name="is_late"  invisible="1" readonly="state == 'closed'"/>
                             <field name="expected_price" readonly="state == 'closed'"/>
@@ -89,7 +89,7 @@
                              <field name="garden_orientation" readonly="state == 'closed'"/>
                         </group>
                         <group string="owner info">
-                            <field name="owner_id" required="0" readonly="state == 'closed'"/>
+                            <field name="owner_id" readonly="state == 'closed'"/>
                             <field name="tags_id" widget="many2many_tags" readonly="state == 'closed'"/>
                             <field name="owner_phone_number" readonly="state == 'closed'"/>
                             <field name="owner_address" readonly="state == 'closed'"/>

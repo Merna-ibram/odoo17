@@ -8,7 +8,7 @@ class PROPERTY(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     ref = fields.Char(default='new', readonly=1)
-    name = fields.Char(required=True, size=15)
+    name = fields.Char(required=True, size=15, translate=True)
     active = fields.Boolean(default=1)
     property_image = fields.Image()
     description = fields.Text()

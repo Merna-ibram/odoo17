@@ -11,6 +11,7 @@
         id="properties_menu"
         name="Properties"
         parent="real_estate_root_menu"
+        action="property_action"
     />
     <!-- Submenu for owners -->
     <menuitem

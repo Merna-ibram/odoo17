@@ -1,0 +1,60 @@
+ <odoo>
+
+    <!-- Form View for todo_assignment Model -->
+    <record id="todo_assignment_view_form" model="ir.ui.view">
+        <field name="name">todo_assignment form</field>
+        <field name="model">todo_assignment</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="employee_id" required="True"/>
+                        <field name="task_ids" widget="many2many_tags" required="1"/>
+                    </group>
+                    <footer>
+                        <button name="assign_tasks" type="object" string="Assign Tasks" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <!-- Action for todo_assignment Model -->
+    <record id="todo_assignment_action" model="ir.actions.act_window">
+        <field name="name">todo_assignment action</field>
+        <field name="res_model">todo_assignment</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <!-- Action to open wizard -->
+    <record id="action_bulk_assign_from_list" model="ir.actions.server">
+    <field name="name">Bulk Assign Tasks</field>
+    <field name="model_id" ref="model_todo_list"/>
+    <field name="binding_model_id" ref="model_todo_list"/>
+    <field name="binding_type">action</field>
+    <field name="state">code</field>
+    <field name="code">
+        action = {
+            'type': 'ir.actions.act_window',
+            'res_model': 'todo_assignment',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_task_ids': records.ids}
+        }
+    </field>
+</record>
+
+
+
+
+<!--     <menuitem-->
+<!--        id="Bulk_Assign"-->
+<!--        name="assignment"-->
+<!--        parent="todo_menu"-->
+<!--        action="todo_assignment_action"-->
+<!--    />-->
+
+</odoo>

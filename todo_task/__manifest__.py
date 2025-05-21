@@ -5,11 +5,15 @@
     'version': '0.1',
     'depends': ['base', 'web', 'mail'],
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
+        'data/sequence.xml',
         'views/base_menu.xml',
         'views/todo_task_view.xml',
         'views/todo_task_line_view.xml',
-        'reports/todo_report.xml'
+        'reports/todo_report.xml',
+        'wizard/todo_assignment_view.xml',
+
     ],
 
     'application': True,

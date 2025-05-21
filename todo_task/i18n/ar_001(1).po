@@ -1,0 +1,109 @@
+#. module: todo_task
+#: model:ir.model.fields,field_description:todo_task.field_todo_list__name
+msgid "Task Name"
+msgstr "اسم المهمة"
+
+#. module: todo_task
+#: model:ir.model.fields,field_description:todo_task.field_todo_list__description
+msgid "Description"
+msgstr "الوصف"
+
+#. module: todo_task
+#: model:ir.model.fields,field_description:todo_task.field_todo_list__assigned_to
+msgid "Assigned To"
+msgstr "مُسند إلى"
+
+#. module: todo_task
+#: model:ir.model.fields,field_description:todo_task.field_todo_list__start_date
+msgid "Start Date"
+msgstr "تاريخ البدء"
+
+#. module: todo_task
+#: model:ir.model.fields,field_description:todo_task.field_todo_list__end_date
+msgid "End Date"
+msgstr "تاريخ الانتهاء"
+
+#. module: todo_task
+#: model:ir.model.fields,field_description:todo_task.field_todo_list__state
+msgid "State"
+msgstr "الحالة"
+
+#. module: todo_task
+#: model:ir.model.fields,field_description:todo_task.field_todo_list__estimated_time
+msgid "Estimated Time"
+msgstr "الوقت المقدر"
+
+#. module: todo_task
+#: model:ir.model.fields,field_description:todo_task.field_todo_list__archived
+msgid "Archived"
+msgstr "مؤرشف"
+
+#. module: todo_task
+#: model:ir.model.fields,field_description:todo_task.field_todo_list__total_time_spent
+msgid "Total Time Spent"
+msgstr "إجمالي الوقت المنقضي"
+
+#. module: todo_task
+#: model:ir.model,name:todo_task.model_todo_list
+msgid "To-Do List Information"
+msgstr "معلومات قائمة المهام"
+
+#. module: todo_task
+#: model:ir.model,name:todo_task.model_todo_list_line
+msgid "To-Do List Line"
+msgstr "عنصر في قائمة المهام"
+
+#. module: todo_task
+#: model_terms:ir.ui.view,arch_db:todo_task.todo_list_view_form
+msgid "Total Time Spent"
+msgstr "إجمالي الوقت المنقضي"
+
+#. module: todo_task
+#: model_terms:ir.ui.view,arch_db:todo_task.todo_list_view_form
+msgid "Tracking"
+msgstr "تتبع"
+
+#. module: todo_task
+#: model:ir.model.fields,field_description:todo_task.field_todo_list_line__name
+msgid "Description"
+msgstr "الوصف"
+
+#. module: todo_task
+#: model:ir.model.fields,field_description:todo_task.field_todo_list_line__date
+msgid "Date"
+msgstr "التاريخ"
+
+#. module: todo_task
+#: model_terms:ir.ui.view,arch_db:todo_task.view_task_line_form
+msgid "Timesheet Entry"
+msgstr "إدخال في الجدول الزمني"
+
+#. module: todo_task
+#: model:ir.model.fields,help:todo_task.field_todo_list__estimated_time
+msgid "Estimated time to complete the task in hours."
+msgstr "الوقت المقدر لإتمام المهمة بالساعات."
+
+#. module: todo_task
+#: model:ir.model.fields,help:todo_task.field_todo_list_line__time_spent
+msgid "Actual time spent on this task (in hours)."
+msgstr "الوقت الفعلي المنقضي على هذه المهمة (بالساعات)."
+
+#. module: todo_task
+#: model_terms:ir.ui.view,arch_db:todo_task.todo_list_view_search
+msgid "Group By"
+msgstr "تجميع حسب"
+
+#. module: todo_task
+#: model_terms:ir.ui.view,arch_db:todo_task.todo_list_view_search
+msgid "State"
+msgstr "الحالة"
+
+#. module: todo_task
+#: model_terms:ir.ui.view,arch_db:todo_task.todo_list_view_search
+msgid "Assigned To"
+msgstr "مُسند إلى"
+
+#. module: todo_task
+#: model:ir.model.fields,help:todo_task.field_todo_list__is_late
+msgid "Indicates whether the task is late based on the due date."
+msgstr "يشير إلى ما إذا كانت المهمة متأخرة بناءً على تاريخ الاستحقاق."

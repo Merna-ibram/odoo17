@@ -9,8 +9,9 @@ class ToDoList(models.Model):
     _description = "To-Do List Information"
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(required=True, string='Task Name')
-    assign_to = fields.Many2one('res.partner')
+    ref = fields.Char(default='new', readonly=1)
+    name = fields.Char(required=True, string='Task Name', translate=True)
+    assign_to = fields.Many2one('res.users', ondelete='set null')
     description = fields.Text()
     due_date = fields.Date()
     expected_date = fields.Date(tracking=1)
@@ -63,6 +64,16 @@ class ToDoList(models.Model):
         print(self.env.company.street)
         print(self.env.context)
         print(self.env.cr)
+
+    @api.model
+    def create(self, vals):
+        res = super(ToDoList, self).create(vals)
+        if res.ref == 'new':
+            sequence = self.env['ir.sequence'].next_by_code('todo_list_seq')
+            if sequence:
+                res.ref = sequence
+
+        return res
 
 
     def create_new_line(self, description,time_spent):

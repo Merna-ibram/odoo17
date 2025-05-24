@@ -5,6 +5,9 @@
         <field name="model">owner</field>
         <field name="arch" type="xml">
             <tree multi_edit="1" create="1" edit="1" delete="1" class="header_custom">
+                <header>
+                    <button name="xlsx_report" type="object" class="btn-primary" string="Print Excel"/>
+                </header>
                 <field name="name"/>
                 <field name="phone_number"/>
                 <field name="property_ids"/>

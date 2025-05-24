@@ -1,5 +1,8 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from datetime import  timedelta
+import requests
+
 
 
 class PROPERTY(models.Model):
@@ -9,6 +12,8 @@ class PROPERTY(models.Model):
 
     ref = fields.Char(default='new', readonly=1)
     name = fields.Char(required=True, size=15, translate=True)
+    create_time = fields.Datetime(default=fields.Datetime.now())
+    next_time = fields.Datetime(compute='compute_next_time')
     active = fields.Boolean(default=1)
     property_image = fields.Image()
     description = fields.Text()
@@ -138,7 +143,7 @@ class PROPERTY(models.Model):
 
     @api.model
     def _search(self, domain, offset=0, limit=None, order=None, access_rights_uid=None):
-        res = super(PROPERTY, self)._search(domain, offset=0, limit=None, order=None, access_rights_uid=None)
+        res = super(PROPERTY, self)._search(domain, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
         print("inside search method")
         return res
 
@@ -179,6 +184,38 @@ class PROPERTY(models.Model):
                 'reason': reason or "",
                 'line_ids': [(0, 0, {'description' : line.description, 'area' : line.area})for line in rec.line_ids],
             })
+
+    def get_property(self):
+        try:
+            payload = dict()
+            response = requests.get('http://localhost:8017//v1/api/properties', data=payload)
+            if response.status_code == 200:
+                print("successful")
+                print(response.content)
+            else:
+                print("fail")
+        except Exception as e:
+            return ValidationError(str(e))
+
+
+    @api.depends('create_time')
+    def compute_next_time(self):
+        for rec in self:
+            if rec.create_time:
+                rec.next_time =  rec.create_time + timedelta(days=6)
+            else:
+                rec.next_time = False
+
+    def xlsx_report(self):
+        return {
+            'type' :'ir.actions.act_url',
+            'url': f'/property/excel/report/{self.env.context.get("active_ids")}',
+            'target': 'new'
+        }
+
+
+
+
 
 
 class PROPERTYLine(models.Model):

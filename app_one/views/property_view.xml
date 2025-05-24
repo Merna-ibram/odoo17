@@ -5,6 +5,9 @@
         <field name="model">property</field>
         <field name="arch" type="xml">
             <tree multi_edit="1" create="1" edit="1" delete="1" class="header_custom" decoration-danger="(is_late)">
+                <header>
+                    <button name="xlsx_report" type="object" class="btn-primary" string="Print Excel"/>
+                </header>
                 <field name="name"/>
                 <field name="is_late" invisible="1" optional="10"/>
                 <field name="description" optional="6"/>
@@ -50,6 +53,8 @@
                     <header>
                         <button name="action" type="object" class="btn-primary"
                                 string="action"/>
+                         <button name="get_property" type="object" class="btn-primary"
+                                string="test call get property"/>
                         <button name="action_draft" type="object" class="btn-primary"
                                 string="draft" invisible="state in ('draft','closed')"/>
                         <button name="action_pending" type="object" class="btn-secondary"
@@ -69,6 +74,8 @@
                     </div>
                     <group>
                         <group string="general info">
+                            <field name="create_time" readonly="1"/>
+                            <field name="next_time" readonly="1"/>
                             <field name="property_image" widget="image" class="oe_avatar" options="{'preview_image': 'property_image'}"/>
                             <field name="postcode" readonly="state == 'closed'"/>
                             <field name="date_availability" readonly="state == 'closed'"/>
@@ -195,6 +202,8 @@
         <field name="active">True</field>
     </record>
 
+
+
     <!-- Menu Item for Property Action -->
     <menuitem
         id="property_menu_item"
@@ -202,4 +211,17 @@
         parent="properties_menu"
         action="property_action"
     />
+
+    <record id="list_view_action"  model="ir.actions.client">
+        <field name="name">Properties List View</field>
+        <field name="tag">app_one.action_list_view</field>
+    </record>
+
+    <menuitem
+        id="property_list_view_menu_item"
+        name="Properties OWL"
+        parent="properties_menu"
+        action="list_view_action"
+    />
+
 </odoo>

@@ -1,6 +1,7 @@
-from urllib.parse import parse_qs
-from odoo import http
+import math
 from odoo.http import request
+from odoo import http
+from urllib.parse import parse_qs
 import json
 
 
@@ -20,6 +21,26 @@ def invalid_response(error , status):
 
 class PropertyAPI(http.Controller):
 
+    # @http.route("/v1/api/property", methods=["POST"], auth="none", type="http", csrf=False)
+    # def post_property_endpoint(self):
+    #     try:
+    #         args = request.httprequest.data.decode('utf-8')
+    #         vals = json.loads(args)
+    #         if not vals.get('name'):
+    #             return invalid_response({
+    #                 "error": "name is required"
+    #             }, status=400)
+    #         res = request.env['property'].sudo().create(vals)
+    #         return valid_response({
+    #             "message": "property has been created",
+    #             "id": res.id,
+    #             "name": res.name
+    #         }, status=201)
+    #     except Exception as e:
+    #         return invalid_response({
+    #             "error": str(e)
+    #         }, status=400)
+
     @http.route("/v1/api/property", methods=["POST"], auth="none", type="http", csrf=False)
     def post_property_endpoint(self):
         try:
@@ -29,11 +50,24 @@ class PropertyAPI(http.Controller):
                 return invalid_response({
                     "error": "name is required"
                 }, status=400)
-            res = request.env['property'].sudo().create(vals)
+            if isinstance(vals.get("name"), (dict, list, str)):
+                vals["name"] = json.dumps(vals["name"])
+            cr = request.env.cr
+            columns = ", ".join(vals.keys())
+            values = ", ".join(["%s"] * len(vals))
+            query = f"""
+                           INSERT INTO property ({columns})
+                           VALUES ({values}) 
+                           RETURNING id, name, postcode
+                       """
+            cr.execute(query, tuple(vals.values()))
+            res = cr.fetchone()
+            print(res)
             return valid_response({
                 "message": "property has been created",
-                "id": res.id,
-                "name": res.name
+                "id": res[0],
+                "name": res[1],
+                "postcode":res[2]
             }, status=201)
         except Exception as e:
             return invalid_response({
@@ -133,37 +167,37 @@ class PropertyAPI(http.Controller):
                     limit = int(params.get('limit')[0])
                 if params.get('page'):
                     page = int(params.get('page')[0])
-            if page:
-                offset = (page * limit) - limit
-            # if params.get('state'):
-            #     property_domain += [('state', '=', params.get('state')[0])]
-
+                if page:
+                    offset = (page * limit) - limit
+            if params.get('state'):
+                property_domain += [('state', '=', params.get('state')[0])]
             property_ids = request.env['property'].sudo().search(property_domain, offset=offset, limit=limit, order='id DESC')
             property_count= request.env['property'].sudo().search_count(property_domain)
-            print(offset)
-            print(limit)
-            print(page)
-            print(property_ids)
-            print(property_count)
-            print("Count of returned records:", len(property_ids))
+
 
             if not property_ids:
                 return invalid_response({
                     "error": "there are not records"
                 }, status=400)
-            return valid_response([{
-                "id": property_id.id,
-                "name": property_id.name,
-                "ref": property_id.ref,
-                "postcode":property_id.postcode,
-                "date_availability": property_id.date_availability,
-                "expected_date": property_id.expected_date,
-                "bedrooms":property_id.bedrooms,
-                "owner_id": {
-                    "id": property_id.owner_id.id,
-                    "name": property_id.owner_id.name
-                }
-            } for property_id in property_ids], status=200)
+            return valid_response({
+                "total": property_count,
+                "pages": math.ceil(property_count / limit) if limit else 1 ,
+                "page": page or 1,
+                "limit": limit,
+                "results": [{
+                    "id": property_id.id,
+                    "name": property_id.name,
+                    "ref": property_id.ref,
+                    "postcode": property_id.postcode,
+                    "date_availability": property_id.date_availability,
+                    "expected_date": property_id.expected_date,
+                    "bedrooms": property_id.bedrooms,
+                    "owner_id": {
+                        "id": property_id.owner_id.id,
+                        "name": property_id.owner_id.name
+                    }
+                } for property_id in property_ids]
+            }, status=200)
         except Exception as e:
             return invalid_response({
                 "error": str(e)

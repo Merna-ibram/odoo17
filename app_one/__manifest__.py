@@ -54,6 +54,9 @@
         'web.assets_backend': [
             'app_one/static/src/css/property.css',
             'app_one/static/src/css/owner.css',
+            'app_one/static/src/components/listView/css/listView.css',
+            'app_one/static/src/components/listView/js/listView.js',
+            'app_one/static/src/components/listView/xml/listView.xml',
         ],
     },
 }

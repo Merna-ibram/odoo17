@@ -26,7 +26,7 @@ class Owner(models.Model):
 
     @api.model
     def _search(self, domain, offset=0, limit=None, order=None, access_rights_uid=None):
-        res = super(Owner, self)._search(domain, offset=0, limit=None, order=None, access_rights_uid=None)
+        res = super(Owner, self)._search(domain, offset=offset, limit=limit, order=order, access_rights_uid=access_rights_uid)
         print("inside search method")
         return res
 
@@ -39,3 +39,10 @@ class Owner(models.Model):
         res = super(Owner, self).unlink()
         print("inside deleted method")
         return res
+
+    def xlsx_report(self):
+        return {
+            'type' :'ir.actions.act_url',
+            'url': f'/owner/excel/report/{self.env.context.get("active_ids")}',
+            'target': 'new'
+        }

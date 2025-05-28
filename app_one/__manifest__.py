@@ -25,6 +25,7 @@
 
         # Data
         'data/sequence.xml',
+        'data/data.xml',
 
         # Views
         'views/base_menu.xml',
@@ -57,6 +58,9 @@
             'app_one/static/src/components/listView/css/listView.css',
             'app_one/static/src/components/listView/js/listView.js',
             'app_one/static/src/components/listView/xml/listView.xml',
+            'app_one/static/src/components/listView/css/owner_listView.css',
+            'app_one/static/src/components/listView/js/owner_listView.js',
+            'app_one/static/src/components/listView/xml/owner_listView.xml',
         ],
     },
 }

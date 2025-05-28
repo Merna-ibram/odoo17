@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates  xml:space="preserve">
+    <t t-name = "app_one.OwnerListView">
+        <h1 class="title">Owners List</h1>
+
+        <button class="btn btn-primary m-1 p-1" t-on-click="CreateRecord">Create Record</button>
+
+
+        <div class="owner-list-container">
+            <table class="owner-table">
+                <thead class="owner-table thead">
+                    <tr>
+                        <th class="owner-table th">Name</th>
+                        <th class="owner-table th">Phone Number</th>
+                        <th class="owner-table th">Address</th>
+                        <th class="owner-table th">Email</th>
+                        <th class="owner-table th">Properties</th>
+                        <th class="owner-table th">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="state.owners" t-as="owner" t-key="owner.id">
+                        <tr class="owner-table tr:hover">
+                            <td><t t-esc="owner.name" /></td>
+                            <td><t t-esc="owner.phone_number" /></td>
+                            <td><t t-esc="owner.address" /></td>
+                            <td><t t-esc="owner.e_mail" /></td>
+                            <td><t t-esc="owner.property_names" /></td>
+                            <td>
+                                <button class="btn btn-danger m-1 p-1" t-on-click="DeleteRecord.bind(this, owner.id)">Delete</button>
+                                <button class="btn btn-secondary m-1 p-1" t-on-click="EditRecord.bind(this, owner.id)">Edit</button>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </t>
+</templates>

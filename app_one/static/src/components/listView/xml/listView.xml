@@ -2,6 +2,43 @@
 
 <templates  xml:space="preserve">
     <t t-name = "app_one.ListView">
-        <h1>hello world!</h1>
+        <h1 class="title">Properties List!</h1>
+
+
+         <button class="btn btn-primary m-1 p-1" t-on-click="CreateRecord">Create Record</button>
+
+
+        <div class="property-list-container">
+            <table class="property-table">
+                <thead class="property-table thead">
+                    <tr>
+                        <th class="property-table th">name</th>
+                        <th class="property-table th">postcode</th>
+                        <th class="property-table th">expected_date</th>
+                        <th class="property-table th">expected_price</th>
+                        <th class="property-table th">bedrooms</th>
+                        <th class="property-table th">state</th>
+                        <th class="property-table th">Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="state.properties" t-as="property" t-key="property.id">
+                        <tr class="property-table tr:hover">
+                            <td><t t-esc="property.name" /></td>
+                            <td><t t-esc="property.postcode" /></td>
+                            <td><t t-esc="property.expected_date" /></td>
+                            <td><t t-esc="property.expected_price" /></td>
+                            <td><t t-esc="property.bedrooms" /></td>
+                            <td><t t-esc="property.state" /></td>
+                            <td>
+                                <button class="btn btn-danger m-1 p-1" t-on-click="DeleteRecord.bind(this, property.id)">Delete</button>
+                                <button class="btn btn-secondary m-1 p-1" t-on-click="EditRecord.bind(this, property.id)">Edit</button>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
     </t>
 </templates>

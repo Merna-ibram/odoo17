@@ -4,6 +4,9 @@
         <field name="model">todo.list</field>
         <field name="arch" type="xml">
             <tree decoration-danger="(is_late)">
+                 <header>
+                    <button name="xlsx_report" type="object" class="btn-primary" string="Print Excel"/>
+                </header>
                 <field name="name"/>
                 <field name="assign_to"/>
                 <field name="due_date"/>
@@ -136,12 +139,22 @@
     </record>
 
 
-
-
     <menuitem
         id="all_task_menu_item"
         name="All Tasks"
         parent="todo_menu"
         action="todo_list_action"
+    />
+
+    <record id="list_view_action"  model="ir.actions.client">
+        <field name="name">Tasks List View</field>
+        <field name="tag">todo_task.action_list_view</field>
+    </record>
+
+    <menuitem
+        id="todo_list_view_menu_item"
+        name="tasks OWL"
+        parent="todo_menu"
+        action="list_view_action"
     />
 </odoo>

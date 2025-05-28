@@ -1,0 +1,38 @@
+<!-- File: todo_task/ListView.xml -->
+<t t-name="todo_task.ListView">
+    <div class="task-list-container">
+        <h2 class="title">To-Do Tasks</h2>
+        <button class="btn btn-primary m-1 p-1" t-on-click="CreateRecord">Create Record</button>
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Assigned To</th>
+                    <th>Description</th>
+                    <th>Due Date</th>
+                    <th>Expected Date</th>
+                    <th>Reference</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="state.tasks" t-as="task" t-key="task.id">
+                    <tr>
+                        <td><t t-esc="task.name" /></td>
+                        <td><t t-esc="task.assign_to[1]" /></td>
+                        <td><t t-esc="task.description" /></td>
+                        <td><t t-esc="task.due_date" /></td>
+                        <td><t t-esc="task.expected_date" /></td>
+                        <td><t t-esc="task.ref" /></td>
+                        <td><t t-esc="task.state" /></td>
+                        <td>
+                            <button class="btn btn-danger m-1 p-1" t-on-click="DeleteRecord.bind(this, task.id)">Delete</button>
+                            <button class="btn btn-secondary m-1 p-1" t-on-click="EditRecord.bind(this, task.id)">Edit</button>
+                        </td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+    </div>
+</t>

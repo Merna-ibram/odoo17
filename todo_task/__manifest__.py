@@ -15,6 +15,13 @@
         'wizard/todo_assignment_view.xml',
 
     ],
+    'assets': {
+        'web.assets_backend': [
+            'todo_task/static/src/components/listView/css/listView.css',
+            'todo_task/static/src/components/listView/js/listView.js',
+            'todo_task/static/src/components/listView/xml/listView.xml',
+        ],
+    },
 
     'application': True,
 

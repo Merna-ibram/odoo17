@@ -99,3 +99,10 @@ class ToDoList(models.Model):
                 rec.next_time =  rec.create_time + timedelta(hours=6)
             else:
                 rec.next_time = False
+
+    def xlsx_report(self):
+        return {
+            'type' :'ir.actions.act_url',
+            'url': f'/todo/excel/report/{self.env.context.get("active_ids")}',
+            'target': 'new'
+        }

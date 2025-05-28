@@ -1,0 +1,53 @@
+<odoo>
+    <!-- View Inheritance -->
+    <record id="res_config_settings_view_form_inherit_show_product_image" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.show.product.image</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='sale_configuration']" position="inside">
+                <div class="app_settings_block" string="Sale Report">
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-12 col-lg-6 o_setting_box">
+                            <div class="o_setting_left_pane">
+                                <field name="show_product_image"/>
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label for="show_product_image"/>
+                                <div class="text-muted">
+                                    Show product image in the sale order lines and reports.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Menu + Action -->
+    <menuitem id="employee_management_menu_root"
+              name="Employee Management"
+              sequence="1"/>
+
+    <menuitem id="employee_management_menu_action"
+              name="Configuration"
+              parent="employee_contract.employee_management_menu_root"
+              sequence="6"/>
+
+    <menuitem id="employee_contract_settings_menu_action"
+              name="Settings"
+              parent="employee_contract.employee_management_menu_action"
+              action="employee_contract.res_config_settings_action"
+              sequence="7"/>
+
+    <record id="res_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'employee_contract'}</field>
+        <field name="binding_model_id" ref="base.model_res_config_settings"/>
+    </record>
+</odoo>

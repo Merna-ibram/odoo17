@@ -21,7 +21,7 @@
 
         # Views
         'views/base_menu.xml',
-        'views/registration_view.xml'
+        'views/registration_view.xml',
 
 
 
@@ -29,6 +29,7 @@
 
 
         # Reports
+        'reports/registration_report.xml',
 
     ],
 

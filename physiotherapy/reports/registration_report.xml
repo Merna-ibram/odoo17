@@ -20,7 +20,7 @@
             <tbody>
               <tr>
                 <th style="width: 15%;">Name</th>
-                <td><span t-field="doc.partner_id.name"/></td>
+                <td><span t-field="doc.name"/></td>
                 <th style="width: 15%;">Age</th>
                 <td><span t-field="doc.age"/></td>
                 <th style="width: 15%;">Sex</th>
@@ -186,7 +186,7 @@
                 <td colspan="6">
                   <p><strong>Neurological Exam:</strong> <span t-field="doc.neuro_exam"/></p>
                   <p><strong>Active ROM:</strong> <span t-field="doc.active_rom"/></p>
-                  <p><strong>Passive ROM:</strong> <span t-field="doc.passivge_rom"/></p>
+                  <p><strong>Passive ROM:</strong> <span t-field="doc.passive_rom"/></p>
                   <p><strong>Manual Muscle Test:</strong> <span t-field="doc.muscle_test"/></p>
                   <p><strong>Special Test:</strong> <span t-field="doc.special_test"/></p>
                 </td>

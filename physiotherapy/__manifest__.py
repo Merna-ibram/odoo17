@@ -17,6 +17,7 @@
 
 
         # Data
+        'data/sequence.xml',
 
 
         # Views

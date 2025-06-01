@@ -6,6 +6,7 @@ class Registration(models.Model):
     _description = 'registration'
 
     partner_id = fields.Many2one('res.partner', string="Name")
+    code = fields.Char(default='new', readonly=1, string="Code")
     name = fields.Char(required=True ,related= 'partner_id.name',  string="Name")
     phone = fields.Char(required=True ,size=11, string="Phone Number")
     age = fields.Integer(required=True, string="Age")
@@ -104,4 +105,13 @@ class Registration(models.Model):
         ('unique_name', 'unique("name")', 'this name is exist ! please try anther one')
     ]
 
+    @api.model
+    def create(self, vals):
+        res = super(Registration, self).create(vals)
+        if res.code == 'new':
+            sequence = self.env['ir.sequence'].next_by_code('registration_seq')
+            if sequence:
+                # Update the record with the generated sequence
+                res.code = sequence
 
+        return res

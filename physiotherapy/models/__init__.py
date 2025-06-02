@@ -1,1 +1,1 @@
-from . import registration
+from . import res_partner

@@ -1,0 +1,134 @@
+<odoo>
+    <data>
+
+        <!-- Inherited Form View -->
+        <record id="view_partner_form_inherit_medical" model="ir.ui.view">
+            <field name="name">res.partner.form.medical.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <!-- مكان إدراج التبويبات الجديدة بعد الاسم -->
+                <xpath expr="//sheet/notebook" position="inside">
+
+                    <!-- Tab: Medical Info -->
+                    <page string="Medical Info">
+
+                        <group>
+                            <field name="code"/>
+                            <field name="age"/>
+                            <field name="gender"/>
+                            <field name="date"/>
+                            <field name="months"/>
+                            <field name="end_date"/>
+                            <field name="diagnosis"/>
+                        </group>
+
+                        <separator string="Past History"/>
+                        <group>
+                            <field name="rta"/>
+                            <field name="sport_injury"/>
+                            <field name="electrical_shock"/>
+                            <field name="burn"/>
+                            <field name="lifting_heavy_object"/>
+                            <field name="no_history_of_trauma"/>
+                            <field name="duration"/>
+                        </group>
+
+                        <separator string="Medical History"/>
+                        <group>
+                            <field name="htn"/>
+                            <field name="dm"/>
+                            <field name="osteoporosis"/>
+                            <field name="cardiac_problems"/>
+                            <field name="other_medical"/>
+                            <field name="surgical_history"/>
+                        </group>
+
+                    </page>
+
+                    <!-- Tab: Complaint & Pain -->
+                    <page string="Complaints and Pain">
+
+                        <group>
+                            <field name="pain"/>
+                            <field name="stiffness"/>
+                            <field name="weakness"/>
+                            <field name="neuro_deficit"/>
+                            <field name="other_chief"/>
+                        </group>
+
+                        <separator string="Pain Description"/>
+                        <group>
+                            <field name="onset"/>
+                            <field name="pain_localized"/>
+                            <field name="pain_radiated"/>
+                            <field name="pain_constant"/>
+                            <field name="pain_intermittent"/>
+                            <field name="aggravated_by"/>
+                            <field name="relieved_by"/>
+                        </group>
+
+                    </page>
+
+                    <!-- Tab: Patient Status -->
+                    <page string="Patient Condition">
+                        <group string="Arrival Condition">
+                            <field name="patient_wheelchair"/>
+                            <field name="patient_assistive"/>
+                            <field name="patient_carried"/>
+                            <field name="patient_on_bed"/>
+                            <field name="patient_normal"/>
+                            <field name="gait_other"/>
+                        </group>
+
+                        <group string="Consciousness">
+                            <field name="oriented"/>
+                            <field name="confused"/>
+                            <field name="vegetated"/>
+                            <field name="conscious_other"/>
+                        </group>
+
+                        <group string="Risk of Falls">
+                            <field name="risk_time"/>
+                            <field name="risk_level"/>
+                        </group>
+                    </page>
+
+                    <!-- Tab: Symptoms -->
+                    <page string="Symptoms and Sessions">
+                        <group string="Symptoms">
+                            <field name="edema"/>
+                            <field name="swelling"/>
+                            <field name="redness"/>
+                            <field name="hotness"/>
+                            <field name="muscle_weakness"/>
+                            <field name="muscle_spasm"/>
+                            <field name="muscle_atrophy"/>
+                            <field name="deformity"/>
+                        </group>
+
+                        <group string="Session Details">
+                            <field name="session"/>
+                            <field name="lazer"/>
+                            <field name="shock_wave"/>
+                            <field name="traction"/>
+                        </group>
+                    </page>
+
+                    <!-- Tab: Examination -->
+                    <page string="Examination">
+                        <group>
+                            <field name="neuro_exam"/>
+                            <field name="active_rom"/>
+                            <field name="passive_rom"/>
+                            <field name="muscle_test"/>
+                            <field name="special_test"/>
+                        </group>
+                    </page>
+
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -22,7 +22,7 @@
 
         # Views
         'views/base_menu.xml',
-        'views/registration_view.xml',
+        'views/res_partner_view.xml',
 
 
 

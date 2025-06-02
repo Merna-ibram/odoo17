@@ -8,10 +8,10 @@ class Registration(models.Model):
 
     code = fields.Char(default='new', readonly=1, string="Code")
     age = fields.Integer(required=True, string="Age")
-    gender = fields.Selection([('m', 'Male'), ('f', 'Female')], string="Gender")
-    date = fields.Date(string="Date Of Registration")
-    months = fields.Integer(string="Number Of Months")
-    end_date = fields.Date(string="End Date", compute="_compute_end_date",store=True)
+    gender = fields.Selection([('m', 'Male'), ('f', 'Female')], string="Gender",required=True)
+    date = fields.Date(string="Subscription start date", required=True)
+    months = fields.Integer(string="Months of subscription", required=True)
+    end_date = fields.Date(string="Subscription End Date", compute="_compute_end_date",store=True)
 
     diagnosis = fields.Text(required=True,  string="Diagnosis")
 
@@ -37,7 +37,7 @@ class Registration(models.Model):
     stiffness = fields.Boolean(string="Stiffness")
     weakness = fields.Boolean(string="Weakness")
     neuro_deficit = fields.Boolean(string="Neurological Deficit")
-    other_chief = fields.Boolean(string="Other Complaint")
+    other_chief = fields.Text(string="Other Complaint")
 
     # Pain Description
     onset = fields.Char(string="Onset")

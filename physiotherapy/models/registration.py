@@ -12,6 +12,9 @@ class Registration(models.Model):
     age = fields.Integer(required=True, string="Age")
     gender = fields.Selection([('m', 'Male'), ('f', 'Female')], string="Gender")
     date = fields.Date(string="Date Of Registration")
+    months = fields.Integer(string="Number Of Months")
+    end_date = fields.Date(string="End Date", compute="_compute_end_date",store=True)
+
 
     diagnosis = fields.Text(required=True,  string="Diagnosis")
 
@@ -115,3 +118,11 @@ class Registration(models.Model):
                 res.code = sequence
 
         return res
+
+     @api.depends('date', 'months')
+    def _compute_end_date(self):
+        for record in self:
+            if record.date and record.months:
+                record.end_date = record.date + relativedelta(months=record.months)
+            else:
+                record.end_date = False

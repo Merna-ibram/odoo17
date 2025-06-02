@@ -11,6 +11,8 @@
                 <field name="age"/>
                 <field name="gender"/>
                 <field name="date"/>
+                 <field name="months"/>
+                <field name="end_date"/>
                 <field name="diagnosis"/>
             </tree>
         </field>
@@ -38,6 +40,8 @@
                         <field name="age"/>
                         <field name="gender"/>
                         <field name="date"/>
+                        <field name="months"/>
+                        <field name="end_date"/>
                         <field name="diagnosis"/>
                     </group>
                     <group string="Past History">

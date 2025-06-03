@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from datetime import date
 from odoo.exceptions import ValidationError
 from dateutil.relativedelta import relativedelta
 
@@ -95,6 +96,8 @@ class Registration(models.Model):
     muscle_test = fields.Text(string="Manual Muscle Test")
     special_test = fields.Text(string="Special Test")
 
+    invoice_created_months = fields.Integer(string="Created Invoices Count", default=0)
+
     @api.constrains('age')
     def _check_age_greater_zero(self):
         for rec in self:
@@ -123,3 +126,54 @@ class Registration(models.Model):
                 record.end_date = record.date + relativedelta(months=record.months)
             else:
                 record.end_date = False
+
+    def create_subscription_invoices(self):
+        today = date.today()
+        partners = self.search([
+            ('date', '!=', False),
+        ])
+
+        for partner in partners:
+            start_date = partner.date
+            created = partner.invoice_created_months
+            months_total = partner.months
+
+            if not months_total or months_total == 0:
+                if created == 0:
+                    self.env['account.move'].create({
+                        'move_type': 'out_invoice',
+                        'partner_id': partner.id,
+                        'invoice_date': start_date,
+                        'date': start_date,
+                        'state': 'draft',
+                        'invoice_line_ids': [
+                            (0, 0, {
+                                'name': 'One-time Subscription Invoice',
+                                'quantity': 1,
+                                'price_unit': 100,
+                            }),
+                        ]
+                    })
+                    partner.invoice_created_months = 1
+
+            elif created < months_total:
+                while created < months_total:
+                    invoice_date = start_date + relativedelta(months=created)
+                    if invoice_date > today:
+                        break
+                    self.env['account.move'].create({
+                        'move_type': 'out_invoice',
+                        'partner_id': partner.id,
+                        'invoice_date': invoice_date,
+                        'date': invoice_date,
+                        'state': 'draft',
+                        'invoice_line_ids': [
+                            (0, 0, {
+                                'name': f'Subscription Invoice - Month {created + 1}',
+                                'quantity': 1,
+                                'price_unit': 100,
+                            }),
+                        ]
+                    })
+                    created += 1
+                    partner.invoice_created_months = created

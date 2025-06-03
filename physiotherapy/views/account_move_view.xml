@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+
+        <record id="view_account_form_inherit_medical" model="ir.ui.view">
+            <field name="name">account.move.form.medical.inherit</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+
+               <xpath expr="//div[.//field[@name='partner_id']]" position="inside">
+                   <group string="Patient Info">
+                       <field name="code"/>
+                       <field name="age"/>
+                       <field name="gender"/>
+                   </group>
+               </xpath>
+                <xpath expr="//group[@id='header_right_group']" position="replace">
+                    <group id="header_right_group">
+                        <separator string="Subscription Info"/>
+                        <field name="date"/>
+                        <field name="months"/>
+                        <field name="end_date"/>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+</odoo>

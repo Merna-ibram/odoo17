@@ -20,7 +20,6 @@
                         <field name="date"/>
                         <field name="months"/>
                         <field name="end_date"/>
-                        <field name="mobile"/>
                     </group>
 
                     <separator string="Diagnosis"/>
@@ -153,10 +152,21 @@
                 <xpath expr="//page[@name='sales_purchases']//field[@name='user_id']" position="attributes">
                     <attribute name="string">الأخصائي</attribute>
                 </xpath>
-
-
             </field>
         </record>
+
+            <record id="ir_cron_create_subscription_invoices" model="ir.cron">
+                <field name="name">Create Subscription Invoices</field>
+                <field name="model_id" ref="base.model_res_partner"/>
+                <field name="state">code</field>
+                <field name="code">model.create_subscription_invoices()</field>
+                <field name="interval_number">1</field>
+                <field name="interval_type">days</field>
+                <field name="numbercall">-1</field>
+                <field name="active">True</field>
+                <field name="user_id" ref="base.user_admin"/>
+            </record>
+
 
     </data>
 </odoo>

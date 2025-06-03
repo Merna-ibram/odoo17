@@ -9,6 +9,7 @@
 
     'depends': [
         'base',
+        'account',
     ],
 
     'data': [
@@ -23,6 +24,8 @@
         # Views
         'views/base_menu.xml',
         'views/res_partner_view.xml',
+        'views/account_move_view.xml',
+
 
 
 

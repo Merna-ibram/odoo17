@@ -1,7 +1,5 @@
 from odoo import models, fields, api
-from datetime import date
 from odoo.exceptions import ValidationError
-from dateutil.relativedelta import relativedelta
 
 class Registration(models.Model):
     _inherit = 'res.partner'
@@ -10,9 +8,6 @@ class Registration(models.Model):
     code = fields.Char(default='new', readonly=1, string="Code")
     age = fields.Integer(required=True, string="Age")
     gender = fields.Selection([('m', 'Male'), ('f', 'Female')], string="Gender",required=True)
-    date = fields.Date(string="Subscription start date", required=True)
-    months = fields.Integer(string="Months of subscription", required=True)
-    end_date = fields.Date(string="Subscription End Date", compute="_compute_end_date",store=True)
 
     diagnosis = fields.Text(required=True,  string="Diagnosis")
 
@@ -96,16 +91,16 @@ class Registration(models.Model):
     muscle_test = fields.Text(string="Manual Muscle Test")
     special_test = fields.Text(string="Special Test")
 
-    invoice_created_months = fields.Integer(string="Created Invoices Count", default=0)
+
 
     @api.constrains('age')
     def _check_age_greater_zero(self):
         for rec in self:
             if rec.age == 0:
-                raise ValidationError('please add valid number of age')
+                raise ValidationError('Please enter a valid age greater than 0')
 
     _sql_constraints = [
-        ('unique_name', 'unique("name")', 'this name is exist ! please try anther one')
+        ('unique_name', 'unique("name")', 'This name already exists! Please try another one.')
     ]
 
     @api.model
@@ -119,61 +114,5 @@ class Registration(models.Model):
 
         return res
 
-    @api.depends('date', 'months')
-    def _compute_end_date(self):
-        for record in self:
-            if record.date and record.months:
-                record.end_date = record.date + relativedelta(months=record.months)
-            else:
-                record.end_date = False
 
-    def create_subscription_invoices(self):
-        today = date.today()
-        partners = self.search([
-            ('date', '!=', False),
-        ])
 
-        for partner in partners:
-            start_date = partner.date
-            created = partner.invoice_created_months
-            months_total = partner.months
-
-            if not months_total or months_total == 0:
-                if created == 0:
-                    self.env['account.move'].create({
-                        'move_type': 'out_invoice',
-                        'partner_id': partner.id,
-                        'invoice_date': start_date,
-                        'date': start_date,
-                        'state': 'draft',
-                        'invoice_line_ids': [
-                            (0, 0, {
-                                'name': 'One-time Subscription Invoice',
-                                'quantity': 1,
-                                'price_unit': 100,
-                            }),
-                        ]
-                    })
-                    partner.invoice_created_months = 1
-
-            elif created < months_total:
-                while created < months_total:
-                    invoice_date = start_date + relativedelta(months=created)
-                    if invoice_date > today:
-                        break
-                    self.env['account.move'].create({
-                        'move_type': 'out_invoice',
-                        'partner_id': partner.id,
-                        'invoice_date': invoice_date,
-                        'date': invoice_date,
-                        'state': 'draft',
-                        'invoice_line_ids': [
-                            (0, 0, {
-                                'name': f'Subscription Invoice - Month {created + 1}',
-                                'quantity': 1,
-                                'price_unit': 100,
-                            }),
-                        ]
-                    })
-                    created += 1
-                    partner.invoice_created_months = created

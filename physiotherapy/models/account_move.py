@@ -6,7 +6,7 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     date = fields.Date(string="Subscription Start Date", required=True)
-    months = fields.Integer(string="Months of Subscription", required=True)
+    months = fields.Integer(string="Months of Subscription")
     end_date = fields.Date(string="Subscription End Date", compute="_compute_end_date", store=True)
     code = fields.Char(related='partner_id.code', readonly=1, string="Code")
     age = fields.Integer(related='partner_id.age', string="Age")

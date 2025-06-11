@@ -9,6 +9,9 @@ class Registration(models.Model):
     age = fields.Integer(required=True, string="Age")
     gender = fields.Selection([('m', 'Male'), ('f', 'Female')], string="Gender",required=True)
 
+    sales_person = fields.Many2one('res.users', string='الاخصائي')
+
+
     diagnosis = fields.Text(required=True,  string="Diagnosis")
 
     # Past History
@@ -93,6 +96,7 @@ class Registration(models.Model):
 
 
 
+
     @api.constrains('age')
     def _check_age_greater_zero(self):
         for rec in self:
@@ -114,5 +118,14 @@ class Registration(models.Model):
 
         return res
 
-
-
+    # @api.multi
+    # def write(self, vals):
+    #     res = super(Registration, self).write(vals)
+    #     if 'sales_person' in vals:
+    #         for partner in self:
+    #             cases = self.env['my.cases'].search([('patient_id', '=', partner.id)])
+    #             cases.write({'sales_person': vals['sales_person']})
+    #     return res
+    #
+    #
+    #

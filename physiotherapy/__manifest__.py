@@ -25,9 +25,8 @@
         'views/base_menu.xml',
         'views/res_partner_view.xml',
         'views/account_move_view.xml',
-
-
-
+        'views/my_cases_views.xml',
+        'views/my_cases_views.xml',
 
         # Wizards
 

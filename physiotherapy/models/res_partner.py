@@ -5,7 +5,7 @@ class Registration(models.Model):
     _inherit = 'res.partner'
     _description = 'Registration'
 
-
+    is_patient = fields.Boolean(string="Is a Patient")
     code = fields.Char(default='new', readonly=1, string="Code")
     age = fields.Integer(required=True, string="Age")
     gender = fields.Selection([('m', 'Male'), ('f', 'Female')], string="Gender",required=True)
@@ -13,7 +13,7 @@ class Registration(models.Model):
     sales_person = fields.Many2one('res.users', string='الاخصائي')
 
 
-    diagnosis = fields.Text(required=True,  string="Diagnosis", tracking=True)
+    diagnosis = fields.Char(string="Diagnosis", tracking=True)
 
     # Past History
     rta = fields.Boolean(string="RTA")
@@ -127,6 +127,10 @@ class Registration(models.Model):
     #             cases = self.env['my.cases'].search([('patient_id', '=', partner.id)])
     #             cases.write({'sales_person': vals['sales_person']})
     #     return res
-    #
-    #
+
+    # @api.constrains('is_patient', 'diagnosis')
+    # def _check_diagnosis_required(self):
+    #     for rec in self:
+    #         if rec.is_patient and not rec.diagnosis:
+    #             raise ValidationError("Diagnosis is required for patients.")
     #

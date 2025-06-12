@@ -10,6 +10,7 @@
     'depends': [
         'base',
         'account',
+        'mail',
     ],
 
     'data': [

@@ -3,7 +3,8 @@ from odoo.exceptions import ValidationError
 
 class Registration(models.Model):
     _inherit = 'res.partner'
-    _description = 'registration'
+    _description = 'Registration'
+
 
     code = fields.Char(default='new', readonly=1, string="Code")
     age = fields.Integer(required=True, string="Age")
@@ -12,7 +13,7 @@ class Registration(models.Model):
     sales_person = fields.Many2one('res.users', string='الاخصائي')
 
 
-    diagnosis = fields.Text(required=True,  string="Diagnosis")
+    diagnosis = fields.Text(required=True,  string="Diagnosis", tracking=True)
 
     # Past History
     rta = fields.Boolean(string="RTA")
@@ -44,8 +45,8 @@ class Registration(models.Model):
     pain_radiated = fields.Boolean(string="Radiated")
     pain_constant = fields.Boolean(string="Constant")
     pain_intermittent = fields.Boolean(string="Intermittent")
-    aggravated_by = fields.Text(string="Aggravated By")
-    relieved_by = fields.Text(string="Relieved By")
+    aggravated_by = fields.Text(string="Aggravated By", tracking=True)
+    relieved_by = fields.Text(string="Relieved By", tracking=True)
 
     # Patient condition on arrival
     patient_wheelchair = fields.Boolean(string="Wheelchair")

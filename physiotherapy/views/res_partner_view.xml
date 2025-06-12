@@ -1,16 +1,14 @@
 <odoo>
     <data>
 
-        <!-- Inherited Form View -->
         <record id="view_partner_form_inherit_medical" model="ir.ui.view">
             <field name="name">res.partner.form.medical.inherit</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
 
-
                 <field name="vat" position="after">
-                    <separator string="person info"/>
+                    <separator string="Patient Info"/>
                     <group>
                         <field name="code"/>
                         <field name="age"/>
@@ -44,7 +42,7 @@
                         <field name="duration"/>
                     </group>
 
-                    <separator string="Complaints and Pain"/>
+                    <separator string="Complaints"/>
                     <group>
                         <field name="pain"/>
                         <field name="stiffness"/>
@@ -64,8 +62,8 @@
                         <field name="relieved_by"/>
                     </group>
 
-                    <separator string="Patient Condition"/>
-                    <group string="Arrival Condition">
+                    <separator string="Patient Condition on Arrival"/>
+                    <group>
                         <field name="patient_wheelchair"/>
                         <field name="patient_assistive"/>
                         <field name="patient_carried"/>
@@ -74,20 +72,22 @@
                         <field name="gait_other"/>
                     </group>
 
-                    <group string="Consciousness">
+                    <separator string="Consciousness"/>
+                    <group>
                         <field name="oriented"/>
                         <field name="confused"/>
                         <field name="vegetated"/>
                         <field name="conscious_other"/>
                     </group>
 
-                    <group string="Risk of Falls">
+                    <separator string="Risk of Falls"/>
+                    <group>
                         <field name="risk_time"/>
                         <field name="risk_level"/>
                     </group>
 
-                    <separator string="Symptoms and Sessions"/>
-                    <group string="Symptoms">
+                    <separator string="Symptoms"/>
+                    <group>
                         <field name="edema"/>
                         <field name="swelling"/>
                         <field name="redness"/>
@@ -98,7 +98,8 @@
                         <field name="deformity"/>
                     </group>
 
-                    <group string="Session Details">
+                    <separator string="Session Details"/>
+                    <group>
                         <field name="session"/>
                         <field name="lazer"/>
                         <field name="shock_wave"/>
@@ -113,8 +114,10 @@
                         <field name="muscle_test"/>
                         <field name="special_test"/>
                     </group>
+
                 </field>
 
+                <!-- Hide default fields -->
                 <xpath expr="//field[@name='category_id']" position="attributes">
                     <attribute name="invisible">1</attribute>
                 </xpath>
@@ -148,16 +151,9 @@
                 <xpath expr="//page[@name='sales_purchases']//field[@name='user_id']" position="attributes">
                     <attribute name="string">الأخصائي</attribute>
                 </xpath>
+
             </field>
         </record>
-
-<!--        <record id="action_specialist_patients" model="ir.actions.act_window">-->
-<!--            <field name="name">My Patients</field>-->
-<!--            <field name="res_model">res.partner</field>-->
-<!--            <field name="view_mode">tree,form</field>-->
-<!--            <field name="domain">[('is_patient', '=', True), ('sales_person', '=', uid)]</field>-->
-<!--        </record>-->
-
 
     </data>
 </odoo>
